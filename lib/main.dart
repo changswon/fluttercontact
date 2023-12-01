@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             onPressed: (){
               Navigator.push(context,
                 MaterialPageRoute(builder: (c) => Upload() )
-              ); //새 페이지 띄우기: onPressed 클릭 시 페이지 이동
+              ); //새 페이지 띄우기: onPressed 클릭 시 페이지 이동  (context) { return Text('안녕'); }  ->  (context) => Text('안녕') 코드축소 가능
             },
             iconSize: 30,
           )
