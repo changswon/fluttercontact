@@ -63,7 +63,11 @@ class _MyAppState extends State<MyApp> {
         actions: [
           IconButton(
             icon:Icon(Icons.add_box_outlined),
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder: (c) => Text('새페이지') ) //새 페이지 띄우기: onPressed 클릭 시 페이지 이동
+              );
+            },
             iconSize: 30,
           )
         ],
@@ -147,5 +151,28 @@ class _HomeState extends State<Home> {
     } else {
       return Text('로딩중');
     }
+  }
+}
+
+class Upload extends StatelessWidget {
+  const Upload({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('이미지 업로드 화면'),
+          IconButton(
+              onPressed: (){
+                Navigator.pop(context);
+                },
+              icon: Icon(Icons.close)
+          ),
+        ],
+      ),
+    );
   }
 }
