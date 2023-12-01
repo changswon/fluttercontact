@@ -65,8 +65,8 @@ class _MyAppState extends State<MyApp> {
             icon:Icon(Icons.add_box_outlined),
             onPressed: (){
               Navigator.push(context,
-                MaterialPageRoute(builder: (c) => Text('새페이지') ) //새 페이지 띄우기: onPressed 클릭 시 페이지 이동
-              );
+                MaterialPageRoute(builder: (c) => Upload() )
+              ); //새 페이지 띄우기: onPressed 클릭 시 페이지 이동
             },
             iconSize: 30,
           )
@@ -155,9 +155,9 @@ class _HomeState extends State<Home> {
 }
 
 class Upload extends StatelessWidget {
-  const Upload({super.key});
-
+  const Upload({Key? key}) : super(key: key);
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
