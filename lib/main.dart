@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import './style.dart' as style;
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'dart:convert'; // dart에서 제공하는 기본 라이브러리 중 하나, 데이터를 인코딩, 디코딩 하는데 쓰임. (ex. json decode)
+import 'package:flutter/rendering.dart'; // 스크롤관련 함수들이 있는 라이브러리
 
 
 void main() {
@@ -23,6 +24,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var tab = 0;
   var data = [];
+
+  void addData(dynamic newData){
+    setState(() {
+      data.add(newData);
+    });
+  }
 
   getData() async {
     try {
@@ -61,7 +68,7 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      body: [Home(data : data), Text('샵'), Text('내정보'),][tab],
+      body: [Home(data : data, addData: addData,), Text('샵'), Text('내정보'),][tab],
 
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
@@ -81,28 +88,59 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({Key? key, this.data}) : super(key: key);
-  final data;
+class Home extends StatefulWidget {
+  const Home({Key? key, required this.data, required this.addData})
+      : super(key: key);
+  final List<dynamic> data;
+  final Function(dynamic) addData;
 
   @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  //23.12.01 scroll 작업
+  var scroll = ScrollController();
+
+  void getMore() async {
+    var result = await http.get(Uri.parse('https://codingapple1.github.io/app/more1.json'));
+    var result2 = jsonDecode(result.body);
+    widget.addData(result2);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    scroll.addListener(() {
+      if(scroll.position.pixels == scroll.position.maxScrollExtent){
+        print('맨 밑까지 스크롤 되었음');
+        getMore();
+      }
+    });
+  }
+
+
+
+
+  
+  @override
   Widget build(BuildContext context) {
-    print(data);
-    if(data.isNotEmpty){
-      return ListView.builder(itemCount: 3, itemBuilder: (c, i) {
+    //print(widget.data); 데이터 출력 테스트
+    if(widget.data.isNotEmpty){
+      return ListView.builder(itemCount: widget.data.length, controller: scroll, itemBuilder: (c, i) { //변수 선언
         return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network('${data[i]['image']}'),
-              Text('ID: ${data[i]['id']}'),
-              Text('Date: ${data[i]['date']}'), // 예를 들어, 날짜를 문자열로 가정
+              Image.network('${widget.data[i]['image']}'),
+              Text('ID: ${widget.data[i]['id']}'),
+              Text('Date: ${widget.data[i]['date']}'), // 예를 들어, 날짜를 문자열로 가정
               Row(
                 children: [
                   Icon(Icons.favorite_border, color: Colors.black), // 하트 아이콘
-                  Text('${data[i]['likes']}'), // 좋아요 수
+                  Text('${widget.data[i]['likes']}'), // 좋아요 수
                 ],
               ),
-              Text('${data[i]['content']}'),
+              Text('${widget.data[i]['content']}'),
             ]
         );
       });
