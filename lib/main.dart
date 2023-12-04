@@ -6,9 +6,18 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'content.dart';
 import 'member.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
-void main() {
+
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MaterialApp(
     theme: style.theme,
     home: MyApp(),
@@ -89,7 +98,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MemberNote'),
+        title: Text('HHI MemberNote'),
         actions: [
           IconButton(
             icon: Icon(Icons.add_box_outlined),
