@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'content.dart';
+import 'member.dart';
 
 
 void main() {
@@ -87,7 +89,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Instagram'),
+        title: Text('MemberNote'),
         actions: [
           IconButton(
             icon: Icon(Icons.add_box_outlined),
@@ -114,7 +116,7 @@ class _MyAppState extends State<MyApp> {
       body: isLoading
           ? Center(child: CircularProgressIndicator(),
       )
-          : [Home(data: data, addData: addData,), Text('샵'), Text('내정보')][tab],
+          : [Home(data: data, addData: addData,),  ContentPage(), MemberPage()][tab],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -127,7 +129,7 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: '홈', tooltip: '홈'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag_outlined), label: '샵', tooltip: '샵'),
+              icon: Icon(Icons.content_paste), label: '콘텐츠', tooltip: '콘텐츠'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: '내정보', tooltip: '내정보'),
         ],
