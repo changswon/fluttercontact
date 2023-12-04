@@ -112,8 +112,7 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
       body: isLoading
-          ? Center(
-        child: CircularProgressIndicator(),
+          ? Center(child: CircularProgressIndicator(),
       )
           : [Home(data: data, addData: addData,), Text('샵'), Text('내정보')][tab],
       bottomNavigationBar: BottomNavigationBar(
@@ -196,7 +195,7 @@ class _HomeState extends State<Home> {
         },
       );
     } else {
-      return Text('로딩중');
+      return Center(child: CircularProgressIndicator());
     }
   }
 }
