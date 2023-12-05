@@ -1,3 +1,4 @@
+// main.dart
 import 'package:flutter/material.dart';
 import './style.dart' as style;
 import 'package:http/http.dart' as http;
@@ -6,13 +7,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'content.dart';
 import 'member.dart';
+import './upload/upload.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
-
-void main() async{
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -38,22 +37,22 @@ class _MyAppState extends State<MyApp> {
   var userContent;
   bool isLoading = true;
 
-  addMyData(){
-   var myData = {
-    'id': data.length,
-    'image': userImage,
-    'likes':5,
-    'date':'July 25',
-    'content': userContent,
-    'liked': false,
-    'user': 'John Kim'
-   };
-   setState(() {
-     data.insert(0, myData);
-   });
+  addMyData() {
+    var myData = {
+      'id': data.length,
+      'image': userImage,
+      'likes': 5,
+      'date': 'July 25',
+      'content': userContent,
+      'liked': false,
+      'user': 'John Kim'
+    };
+    setState(() {
+      data.insert(0, myData);
+    });
   }
 
-  setUserContent(a){
+  setUserContent(a) {
     setState(() {
       userContent = a;
     });
@@ -67,7 +66,8 @@ class _MyAppState extends State<MyApp> {
 
   getData() async {
     try {
-      var result = await http.get(Uri.parse('https://codingapple1.github.io/app/data.json'));
+      var result =
+      await http.get(Uri.parse('https://codingapple1.github.io/app/data.json'));
       if (result.statusCode == 200) {
         var result2 = jsonDecode(result.body);
         setState(() {
@@ -104,18 +104,21 @@ class _MyAppState extends State<MyApp> {
             icon: Icon(Icons.add_box_outlined),
             onPressed: () async {
               var picker = ImagePicker();
-              var image = await picker.pickImage(source: ImageSource.gallery); // 카메라로 바꾸고싶으면 .camera
+              var image = await picker.pickImage(source: ImageSource.gallery);
               if (image != null) {
-                setState((){
+                setState(() {
                   userImage = File(image.path);
                 });
               }
-              Navigator.push(context,
-                MaterialPageRoute(builder: (c) => Upload(
-                  userImage : userImage,
-                  setUserContent : setUserContent,
-                  addMyData : addMyData,
-                ))
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (c) => Upload(
+                    userImage: userImage,
+                    setUserContent: setUserContent,
+                    addMyData: addMyData,
+                  ),
+                ),
               );
             },
             iconSize: 30,
@@ -123,9 +126,14 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator(),
+          ? Center(
+        child: CircularProgressIndicator(),
       )
-          : [Home(data: data, addData: addData,),  ContentPage(), MemberPage()][tab],
+          : [
+        Home(data: data, addData: addData),
+        ContentPage(),
+        MemberPage(),
+      ][tab],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -138,7 +146,9 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: '홈', tooltip: '홈'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.content_paste), label: '콘텐츠', tooltip: '콘텐츠'),
+              icon: Icon(Icons.content_paste),
+              label: '콘텐츠',
+              tooltip: '콘텐츠'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: '내정보', tooltip: '내정보'),
         ],
@@ -208,43 +218,5 @@ class _HomeState extends State<Home> {
     } else {
       return Center(child: CircularProgressIndicator());
     }
-  }
-}
-
-class Upload extends StatelessWidget {
-  const Upload({Key? key, this.userImage, this.setUserContent, this.addMyData}) : super(key: key);
-  final userImage;
-  final setUserContent;
-  final addMyData;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){
-            addMyData();
-          }, icon:Icon(Icons.send))
-        ]),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 200,
-            height: 200,
-            child: Image.file(userImage),
-          ),
-
-          TextField(onChanged: (text){ setUserContent(text); }),
-          IconButton(
-            onPressed: () {
-
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.close),
-          ),
-        ],
-      ),
-    );
   }
 }
