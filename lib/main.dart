@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'content.dart';
-import 'member.dart';
+import './member/member.dart';
 import './upload/upload.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
