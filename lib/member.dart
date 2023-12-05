@@ -9,14 +9,26 @@ class MemberPage extends StatefulWidget {
 }
 
 class _MemberPageState extends State<MemberPage> {
-  late List<QueryDocumentSnapshot> docs = []; // 초기화
+  late List<QueryDocumentSnapshot> docs = [];
 
   getData() async {
     try {
       var result = await firestore.collection('member').get();
       if (result.docs.isNotEmpty) {
+        var sortedDocs = result.docs.toList()
+          ..sort((a, b) {
+            var aValue = a['idlevel'];
+            var bValue = b['idlevel'];
+
+            if (aValue is num && bValue is num) {
+              return bValue.compareTo(aValue);
+            } else {
+              return 0;
+            }
+          });
+
         setState(() {
-          docs = result.docs.toList();
+          docs = List.from(sortedDocs.reversed);
         });
       } else {
         print('No data available');
