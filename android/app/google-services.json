@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "160489181605",
+    "project_id": "fluttergram-83204",
+    "storage_bucket": "fluttergram-83204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160489181605:android:01188d669190950ec3584c",
+        "android_client_info": {
+          "package_name": "com.gana.insta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ2egd-qY8oxST9WWhOt-wiohsjhmLP2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
